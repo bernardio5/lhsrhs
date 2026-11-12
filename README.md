@@ -89,6 +89,10 @@ Instruments a-e are FM-synthesis Instrmnts: BeeThree, a Hammond Organ; FMVoices,
 
 Instrument Z is also the default, so if you go past 'e', you always get a STK "Simple" Instrmnt, which has a sine generator connected to a noise generator and some reverb and feedback. It *seems* like it would be good for synthetic percussion, but I haven't been pleased by my results yet. 
 
+All the instruments have default settings. Not all instruments use all 8 controls; the default settings put 'x''s on those by convention. You can edit the x's, but nothing will happen. Ctrl-X is cut; if you use cut when the cursor is over a row's controls, they'll all get set to defaults. 
+
+ctrl-x, ctrl-c, and ctrl-v are cut, copy, and paste, like my muscle memory says. (Oh, your muscle memory is for Emacs? Ew.) There are separate copy/paste memories for sequences and controls, so you can't accidentally paste a sequence onto controls. 
+
 Other instruments are WIP. Something fm, something granular, something theremin-ish, something synth-drummy, something with different filters. A filter bank would be groovy, maybe something with 4 rows and then a filter bank maybe. Existing instruments are 20-150 lines of code, so watch this space. 
 
 Top priority is just a straightforward sampler. lhsrhs is for making techno, right? So having a track that's beat plus a kewl/sick sound sample that you play every 1-4 measures for the whole track like it's ironic or a comment (looking at you, Orbital)-- gotta support that. 
@@ -101,7 +105,7 @@ Which brings us to column 19, the rightmost red column: the speedup factor. The 
 
 So, "beats" are the unit used to set tempo, and the sequencers use 16 steps per measure, and the "steps per second" rate is 4x the BPM. "Speedup" sets "ticks per step". The default is 8 ticks per step, 32 ticks per beat, 128 ticks per measure. 
 
-"Speedup" defaults to 8, which is "no speedup". If you set it to 4, the row runs twice as fast. If you set it to 16 ('g'), half as fast, 32 ('w') one-quarter speed, and now you could play something every 4 measures. 
+"Speedup" defaults to 8, which is "no speedup". If you set it to 16('g'), the row runs twice as fast. If you set it to 4, half as fast, 2 gives one-quarter speed, and now you could play something every 4 measures. 32 is 'w'.
 
 Non-powers-of-2 speedups will either make a mess or showcase the vision of your chaotic genius. Probably the former! 
 
