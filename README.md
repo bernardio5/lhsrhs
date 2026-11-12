@@ -3,7 +3,7 @@
 
 README for lhsrhs ("Left-Hand Side/Right-Hand Side") ("Lezzerhess")
 
-Reader beware! This is an "Esoteric" interface. It's inscrutable! It might not be for you. You will have to read this to get it to do anything. Control-Q quits! Control-c is the "cut" part of cut and paste, which might frustrate some people. Also, it's *nerdy*: the interface is built in ncurses, which is also used by Vim: esoteric. VT-100 terminal support, check! 
+Reader beware! This is an "Esoteric" interface. It's inscrutable! It might not be for you. You will have to read this to get it to do anything. Control-Q quits! Control-c is the "cut" part of cut and paste, which might frustrate some people. Also, it's *nerdy*: the interface is built in ncurses, which is also used by Vim: esoteric. VT-100 support: check! 
 
 I really made this for myself. I imagine using it in a performance! In the performance, I'd project my desktop, and the audience would see what I'm doing, and it would be dense, fast, colorful, and clearly, controlling the music generation, somehow. I have prioritized feature inclusion, control terseness and interface density (20 sequencers simultaneously editable! 160 controls lerping simultaneously), not ease of use or scrutability. For instance, it uses its own numbering system! For instance, do you know what "lerping" is? Read on!
 
