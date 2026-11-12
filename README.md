@@ -26,7 +26,7 @@ Below the timer row are the sequencer rows, second row to next-to-last.
 
 They have have a LHS that you play into headphones, and a RHS that you play on the speaker-- allowing you, too, to be so charming. 
 
-The sequencer rows have LHS and RHS sequences, set by the first 16 characters of the row. If you move the cursor to the left side of a row, and type a lower-case letter or numeral there, that edits the LHS sequence, and you'll start hearing a note on your LHS-- your left ear-- once per measure.
+The sequencer rows have LHS and RHS sequences, set by the first 16 characters of the row, the green numberletters. If you move the cursor to the left side of a row, and type a lower-case letter or numeral there, that edits the LHS sequence, and you'll start hearing a note on your LHS-- your left ear-- once per measure.
 
 You can't edit the RHS directly, or even get the cursor to go over there.
 
@@ -44,7 +44,7 @@ Ctrl-g adds 1 to the current row's timer, without having to move the cursor to c
 
 The very last column on each side is the MIX control. 
 
-Oo, controls! Lots of controls. Each row has 8 on LHS and RHS. They're the rightmost numberletters on each side. 
+Oo, controls! Lots of controls. Each row has 8 on LHS and RHS. They're the rightmost numberletters on each side. They are yellow-orange.
 
 Almost all the numberletters in the program use ORCA numbers. If you know about hexadecimal numbers, they're like that, but more so. That is, 0 is 0, 1 is 1, 2 is 2, .. 9 is 9, and then, like hexadecimal, a is 10, b is 11, .. f is 15, BUT THEN g is 16, and then we just keep going till we get to z being 35. They're called "Orcas" in worshipful homage to Orca (https://100r.co/site/orca.html).
 
@@ -70,7 +70,7 @@ Instrument 0 is the null instrument. Not very useful!
 
 2 is a sine oscillator with an ADSR envelope and a volume control (col 27). ADSRs are set by first 4 controls. Sequencer Orcas control the pitch. The sine instrument is TUNED (see below). The sine inst wants "note off" commands; put '.''s in the seq. If you don't, it just plays forever.
 
-Wow, I just realized that you might not know what an "ADSR envelope" is. Or what an "oscillator" being a "sine" would signify. This *is* esoteric. 
+Wow, I just realized that you might not know what an "ADSR envelope" is. Or what an "oscillator" being a "sine" would signify. This *is* esoteric. https://cmtext.com/synthesis/chapter4_waveforms.php
 
 3 is a square osc; same ADSR. Col 24 (control 5) is the duty cycle, col 25 is a high-pass filter z-axis setting. Also TUNED. Also wants noteoffs.
 
