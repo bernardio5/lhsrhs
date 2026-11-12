@@ -1,6 +1,6 @@
 
 
-README for lhsrhs ("Left-Hand Side/Right-Hand Side")
+README for lhsrhs ("Left-Hand Side/Right-Hand Side") ("Lezzerhess")
 
 Reader beware! This is an "Esoteric" interface. It's inscrutable! It might not be for you. You will have to read this to get it to do anything. Control-Q quits! Control-c is the "cut" part of cut and paste, which might frustrate some people. 
 
