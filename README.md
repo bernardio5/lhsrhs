@@ -13,7 +13,7 @@ Then enter "./lhsrhs" and off you go!
 
 The program is a sequencer. When it's running, it should immediately start with a basic drum beat at 120 BPM. If it doesn't, it's broken; blame me and quit.
 
-The program takes over a console! It doesn't make a window-- too 21st-century. When the thing is running, the console will show ~20 rows. Each row is its own little thing. There are colors! 
+The program takes over a console! It doesn't make a window-- too 21st-century-- so *tired* of the 21st century. If you want graphics, I guess technically numbers and letters are graphical? When the thing is running, the console will show ~20 rows. Each row is its own little thing. There are colors! 
 
 The top row is the Timer row. It controls BPM, beats/min. You'll see a "120" right there, and also, to the side should be a little blurb that says,  "timer row / BPM:120". 
 
