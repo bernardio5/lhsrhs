@@ -65,9 +65,11 @@ Instrument 0 is the null instrument. Not very useful!
 
 1 is the drumsampler. Sequence letters select which file to play. The files are in the 'data' directory. There are 10, so put 0-9 in the sequencer part of the rows. I need more than 10: someday. The filenames are hardcoded, which sucks but I'll get to it. 
 
-2 is a sine osc with an ADSR envelope and a volume control (col 27). ADSRs are set by first 4 controls. Sequencer Orcas control the pitch. The sine instrument is TUNED (see below). The sine inst wants "note off" commands; put '.''s in the seq. If you don't, it just plays forever.
+2 is a sine oscillator with an ADSR envelope and a volume control (col 27). ADSRs are set by first 4 controls. Sequencer Orcas control the pitch. The sine instrument is TUNED (see below). The sine inst wants "note off" commands; put '.''s in the seq. If you don't, it just plays forever.
 
-3 is a square osc, with the same ADSR. Col 24 (control 5) is the duty cycle, col 25 is a high-pass filter freq, (same as seq pitches) and 26 is the dropoff. Also TUNED. Also wants noteoffs.
+Wow, I just realized that you might not know what an "ADSR envelope" is. Or what an "oscillator" being a "sine" would signify. This *is* esoteric. 
+
+3 is a square osc; same ADSR. Col 24 (control 5) is the duty cycle, col 25 is a high-pass filter z-axis setting. Also TUNED. Also wants noteoffs.
 
 Note that the sine doesn't have a filter; filters don't affect sine waves-- no harmonics!
 
@@ -78,25 +80,29 @@ Note that the sine doesn't have a filter; filters don't affect sine waves-- no h
 Instruments 6-e are more-or-less directly included Instrmnt's (that's the parent class name) from "The Synthesis ToolKit in C++ (STK)" by Perry R. Cook & Gary P. Scavone-- which is not the usual STK that millions of C++ folks use daily, so good luck Googling it. https://ccrma.stanford.edu/software/stk/index.html
 
 Instruments 6-9 are the presets for the "BandedWG" Instrmnt. They're kinda quiet, so up the volume. 
-Uniform Bar, Tuned Bar, Glass Harmonica, and Tibetan Bowl. Kinda drone-y, kinda chime-y.
+Uniform Bar, Tuned Bar, Glass Harmonica, and Tibetan Bowl. Kinda drone-y, kinda chime-y. BandedWG.h specifies 5 control messages, and the leftmost controls give you access to those settings. 
 
-Instruments a-e are FM-synthesis Instrmnts: BeeThree, a Hammond Organ; FMVoices, which kinda can sometimes sound like a human;  Rhodey, a piano-ish thing that Herbie Hancock might like; TubeBell, which is chimey and kinda a standard FM synth voice; and Wurley, another Hancockish piano. 
+Instruments a-e are FM-synthesis Instrmnts: BeeThree, a Hammond Organ; FMVoices, which kinda can sometimes sound like a human;  Rhodey, a piano-ish thing that Herbie Hancock might like; TubeBell, which is chimey and kinda a standard FM synth voice; and Wurley, another Hancocky piano. 
+
+Instrument Z is also the default, so if you go past 'e', you always get a STK "Simple" Instrmnt, which has a sine generator connected to a noise generator and some reverb and feedback. It *seems* like it would be good for synthetic percussion, but I haven't been pleased by my results yet. 
 
 Other instruments are WIP. Something fm, something granular, something theremin-ish, something synth-drummy, something with different filters. A filter bank would be groovy, maybe something with 4 rows and then a filter bank maybe. Existing instruments are 20-150 lines of code, so watch this space. 
 
+Top priority is just a straightforward sampler. lhsrhs is for making techno, right? So having a track that's beat plus a kewl/sick sound sample that you play every 1-4 measures for the whole track like it's ironic or a comment (looking at you, Orbital)-- gotta support that. 
+
 "But wait!" mutters the alert reader. "Every 4 measures? How am I going to do that here?" 
 
-Which brings us to column 19: the speedup factor. The timer tick duration is the same for all rows. A timer tick is 1/4 of a "beat" as set in the "BPM" thing in the top row. 
+Which brings us to column 19, the rightmost red column: the speedup factor. The timer tick duration is the same for all rows. A timer tick is 1/4 of a "beat" as set in the "BPM" thing in the top row. 
 
-120 BPM conventionally means two beats a second, one measure per 2 seconds, 4/4. To defy this convention is folly! But also, we have 16 sequencer steps per measure, by t'other ancient convention. If each tick was a beat, 120 would give one measure every 8 seconds-- which would be STUPID. 
+120 BPM conventionally means two beats a second, one measure per 2 seconds, 4/4. To defy this convention is folly! But also, we have 16 sequencer steps per measure, by t'other ancient convention. If each step was a beat, 120 would give one measure every 8 seconds-- which would be STUPID. 
 
-So, "beats" are the unit used to set tempo, and "ticksPerSecond" is 4x the number of beats/second, and the sequencers use "ticks".
+So, "beats" are the unit used to set tempo, and the sequencers use 16 steps per measure, and the "steps per second" rate is 4x the BPM. "Speedup" sets "ticks per step". The default is 8 ticks per step, 32 ticks per beat, 128 ticks per measure. 
 
-So! "Speedup" defaults to 8, which is "no speedup". If you set it to 4, the row runs twice as fast. If you set it to 16 ('g'), half as fast, 32 ('w') 4x. Hello, drum&bass! Non-powers-of-2 will either make a mess or showcase the vision of your chaotic genius. Probably the former! 
+"Speedup" defaults to 8, which is "no speedup". If you set it to 4, the row runs twice as fast. If you set it to 16 ('g'), half as fast, 32 ('w') one-quarter speed, and now you could play something every 4 measures. 
+
+Non-powers-of-2 speedups will either make a mess or showcase the vision of your chaotic genius. Probably the former! 
 
 Resynchronizing rows after you monkey with their steps will require finesse. I ought to make ctrl-u ("Unite!") make all the rows pop back to step 0. Someday.
-
-Anyway, setting speedup to 1 for your samplersampler would let you set up samples to play every 8 measures. Might be good for drones, too!
 
 I intend for the second-from-bottom row to be "active": whatever changes you make copy over immediately-- no timer. Risky!
 
