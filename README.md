@@ -2,9 +2,9 @@
 
 README for lhsrhs ("Left-Hand Side/Right-Hand Side") ("Lezzerhess")
 
-Reader beware! This is an "Esoteric" interface. It's inscrutable! It might not be for you. You will have to read this to get it to do anything. Control-Q quits! Control-c is the "cut" part of cut and paste, which might frustrate some people. 
+Reader beware! This is an "Esoteric" interface. It's inscrutable! It might not be for you. You will have to read this to get it to do anything. Control-Q quits! Control-c is the "cut" part of cut and paste, which might frustrate some people. Also, it's *nerdy*: the interface is built in ncurses, which is also used by Vim: esoteric. VT-100 terminal support, check! 
 
-I really made this for myself. I imagine using it in a performance! In the performance, I'd project my desktop, and the audience would see what I'm doing, and it would be dense, fast, colorful, and clearly, controlling the music generation, somehow. I have prioritized feature inclusion, control terseness and interface density (20 sequencers simultaneously editable! 160 controls lerping simultaneously), not ease of use or scrutability. For instance, it uses its own numbering system! For instance, do you know what a LERP is? Read on!
+I really made this for myself. I imagine using it in a performance! In the performance, I'd project my desktop, and the audience would see what I'm doing, and it would be dense, fast, colorful, and clearly, controlling the music generation, somehow. I have prioritized feature inclusion, control terseness and interface density (20 sequencers simultaneously editable! 160 controls lerping simultaneously), not ease of use or scrutability. For instance, it uses its own numbering system! For instance, do you know what "lerping" is? Read on!
 
 It's a Linux console program; to run it, you'll probably have to build it, and to do that, you'll need to duplicate this project, install the STK audio toolkit, and copy its "include" directory into the directory that contains this README.
 Then, in a console, cd to that directory and use the "make" command. It should build in, like, 2 seconds. You might also have to install the "ncurses" library, but usually, ncurses comes installed with your Linux.  
@@ -164,6 +164,7 @@ The LHS previewing is not yet implemented.
 The sampler file set being hardcoded is crappy-- scan the directory!
 More filters
 Many more instruments 
+Instruments can give helpful text strings so I don't have to memorize everything; I need to update those. 
 There are LERP bugs
 The tuner's sequencing is off by one. 
 Controls that are not LERPing should be cheaper
