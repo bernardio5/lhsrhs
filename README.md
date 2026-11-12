@@ -2,17 +2,18 @@
 
 README for lhsrhs ("Left-Hand Side/Right-Hand Side")
 
-Reader beware! This is an "Esoteric" interface. It's inscrutable! It might not be for you. You will have to read this to get it to do anything. Control-Q quits! Control-c is the "cut" part of cut and paste, which might frustrate some people. Those people might want to DO SOMETHING ELSE and TAKE THEIR UX NORMS EXPECTATIONS AND GET BENT.  
+Reader beware! This is an "Esoteric" interface. It's inscrutable! It might not be for you. You will have to read this to get it to do anything. Control-Q quits! Control-c is the "cut" part of cut and paste, which might frustrate some people. 
 
-It's a console program; to run it, get linux and then use ./lhsrhs from the directory it's in. If you want to build it, you'll need the "ncurses" library, which you've probably already got installed, since Vim uses it. Yeah, you'll prolly wanna build it. There's a makefile! 
- 
-It needs samples in a "data" subdirectory.
+I really made this for myself. I imagine using it in a performance! In the performance, I'd project my desktop, and the audience would see what I'm doing, and it would be dense, fast, colorful, and clearly, controlling the music generation, somehow. I have prioritized feature inclusion and control terseness, not ease of use or scrutability. For instance, it uses its own numbering system! 
+
+It's a Linux console program; to run it, you'll probably have to build it, and to do that, you'll need to duplicate this project, install the STK audio toolkit, and copy its "include" directory into the directory that contains this README.
+Then, in a console, cd to that directory and use the "make" command. It should build in about 5 seconds. You might also have to install the "ncurses" library, but usually, ncurses comes installed with your Linux.  
+
+Then enter "./lhsrhs" and off you go!
 
 The program is a sequencer. When it's running, it should immediately start with a basic drum beat at 120 BPM. If it doesn't, it's broken; blame me and quit.
 
-The program takes over a console! It doesn't make a window-- too 21st-century. So you need to run it from the console. If that seems hard, maybe you should give up and stay in Apple's walled safe surveilled kiddie garden. 
-
-When the thing is running, the console will show ~20 rows. Each row is its own little thing.
+The program takes over a console! It doesn't make a window-- too 21st-century. When the thing is running, the console will show ~20 rows. Each row is its own little thing. There are colors! 
 
 The top row is the Timer row. It controls BPM, beats/min. You'll see a "120" right there, and also, to the side should be a little blurb that says,  "timer row / BPM:120". 
 
