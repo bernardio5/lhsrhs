@@ -1,3 +1,4 @@
+<img width="845" height="613" alt="Screenshot from 2026-11-12 14-29-18" src="https://github.com/user-attachments/assets/fad4ee3b-5029-415c-b742-c175810ca7d8" />
 
 
 README for lhsrhs ("Left-Hand Side/Right-Hand Side") ("Lezzerhess")
