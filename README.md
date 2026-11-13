@@ -38,7 +38,7 @@ At which point, what's playing on the RHS changes. Charming!
 
 Moving the cursor! You can use arrow keys, but we might be in a hurry and not wanting to flap our hands all around, so ctrl-wasd also moves them, and also the number pad. Home goes to column 0, end to column 16, pg-up to the top and pg-dn to the bottom. 
 
-Your mouse does nothing! You don't have time for mice! Too 21st-century!
+Your mouse does nothing: a) mice are for edit areas bigger than 30x20 b) keep your hands on the keyboard, it's faster c) I prioritized the samplers.
 
 Ctrl-g adds 1 to the current row's timer, without having to move the cursor to column 16. Contol-g means Go! 
 
