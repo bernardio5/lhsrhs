@@ -42,9 +42,9 @@ Your mouse does nothing: a) mice are for edit areas bigger than 30x20 b) keep yo
 
 Ctrl-g adds 1 to the current row's timer, without having to move the cursor to column 16. Contol-g means Go! 
 
-The very last column on each side is the MIX control. 
+The very last column on each side, the rightmost orange character, is the mix control. Each row controls its own volume. You could blow out your speakers: don't.
 
-Oo, controls! Lots of controls. Each row has 8 on LHS and RHS. They're the rightmost numberletters on each side. They are yellow-orange.
+Other controls! Lots of controls. Each row has 8 on LHS and RHS-- the yellow-orange numberletters. The blue vertical stripes help me line up & match columns-- the blue columns don't affect/mean/do anything. 
 
 Almost all the numberletters in the program use ORCA numbers. If you know about hexadecimal numbers, they're like that, but more so. That is, 0 is 0, 1 is 1, 2 is 2, .. 9 is 9, and then, like hexadecimal, a is 10, b is 11, .. f is 15, BUT THEN g is 16, and then we just keep going till we get to z being 35. They're called "Orcas" in worshipful homage to Orca (https://100r.co/site/orca.html).
 
