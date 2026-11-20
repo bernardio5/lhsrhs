@@ -24,23 +24,37 @@
 
 // mine
 #define SEQ_IN_DRUM '1'
-#define SEQ_IN_SINE '2'   
-#define SEQ_IN_SQUARE '3'
-#define SEQ_IN_SAW '4'
-#define SEQ_IN_NOISE '5'
+#define SEQ_IN_CONGA '2'
+#define SEQ_IN_TABLA '3'
+#define SEQ_IN_SYNDRUM '4'
+
+#define SEQ_IN_SINE '5'   
+#define SEQ_IN_SQUARE '6'
+#define SEQ_IN_SAW '7'
+#define SEQ_IN_NOISE '8'
 
 // theirs, added, working-ish
-#define SEQ_IN_BAR '6' 		// Uniform Bar (bandedWG)
-#define SEQ_IN_TUNEDBAR '7'	// Tuned Bar (bandedWG)
-#define SEQ_IN_GLASSHARM '8'  // Glass Harmonica (bandedWG)
-#define SEQ_IN_BOWL '9' 	// Tibetan Bowl (bandedWG)
+#define SEQ_IN_BAR 'a' 		// Uniform Bar (bandedWG)
+#define SEQ_IN_TUNEDBAR 'b'	// Tuned Bar (bandedWG)
+#define SEQ_IN_GLASSHARM 'c'  // Glass Harmonica (bandedWG)
+#define SEQ_IN_BOWL 'd' 	// Tibetan Bowl (bandedWG)
 
 // children of FM, generally all the same parameters
-#define SEQ_IN_B3 'a' 		// BeeThree
-#define SEQ_IN_FMVOICES 'b' // FMVoices
-#define SEQ_IN_RHODEY 'c' 	// Rhodey
-#define SEQ_IN_TUBEBELL 'd' // TubeBell
-#define SEQ_IN_WURLEY 'e' 	// Wurley
+#define SEQ_IN_B3 'e' 		// BeeThree
+#define SEQ_IN_FMVOICES 'f' // FMVoices
+#define SEQ_IN_RHODEY 'g' 	// Rhodey
+#define SEQ_IN_TUBEBELL 'h' // TubeBell
+#define SEQ_IN_WURLEY 'i' 	// Wurley
+
+// FM's of the 8 standard algorithms   #4 always feeds back into itself
+#define SEQ_FM_1 'n'		// 4->3->2->1->out
+#define SEQ_FM_2 'o'		// 4->2, 3->2->1->out
+#define SEQ_FM_3 'p'		// 4->1, 3->2->1->out
+#define SEQ_FM_4 'q'		// 2->1->out, 4->3->1
+#define SEQ_FM_5 'r'		// 2->1->out, 4->3->out
+#define SEQ_FM_6 's'		// 4->1->out, 4->2->out, 4->3->out
+#define SEQ_FM_7 't'		// 4->3->out, 1->out, 2->out
+#define SEQ_FM_8 'u'		// 1->out, 2->out, 3->out, 4->out
 
 #define SEQ_IN_SIMPLE 'z' 	// Simple
 
@@ -73,7 +87,6 @@ And you'd probably have to scale things anyway.
 
 
 */
-
 
 
 
