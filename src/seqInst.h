@@ -44,6 +44,7 @@ public:
     inMixer *theMixer;
     
     void triggerAsSampDrum(char evt, seqKeyable *ctrls);
+    void triggerAsSynDrum(char evt, seqKeyable *ctrls);
     void triggerAsWaves(char evt, seqKeyable *ctrls);
     void triggerAsBanded(char evt, seqKeyable *ctrls);
     void triggerAsFM(char evt, seqKeyable *ctrls);
@@ -51,4 +52,3 @@ public:
     void triggerAsSimple(char evt, seqKeyable *ctrls);
     
 };
-
