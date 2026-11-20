@@ -48,7 +48,7 @@ Other controls! Lots of controls. Each row has 8 on LHS and RHS-- the yellow-ora
 
 Almost all the numberletters in the program use ORCA numbers. If you know about hexadecimal numbers, they're like that, but more so. That is, 0 is 0, 1 is 1, 2 is 2, .. 9 is 9, and then, like hexadecimal, a is 10, b is 11, .. f is 15, BUT THEN g is 16, and then we just keep going till we get to z being 35. They're called "Orcas" in worshipful homage to Orca (https://100r.co/site/orca.html).
 
-Some of the Orcas are used as integers: the seqencer, usually. But they can also be used as fractions: 1 is 1/35, or 0.028571429. There are scaling issues sometimes. For instance, most instruments have an ADSR envelope, and for them the A is in seconds (a fraction), the D is in milliseconds (how long to drop to the sustain level), the S is a fraction, in 35ths, and the R is release in seconds, a fraction, but then I multiply it by 2 or something. 
+Some of the Orcas are used as integers: the sequencer, usually. But they can also be used as fractions: 1 is 1/35, or 0.028571429. There are scaling issues sometimes. For instance, most instruments have an ADSR envelope, and for them the A is in seconds (a fraction), the D is in milliseconds (how long to drop to the sustain level), the S is a fraction, in 35ths, and the R is release in seconds, a fraction, but then I multiply it by 2 or something. 
 
 So! Controls! Each row has 8, on the right of the LHS and RHS. What they do depends on the instrument. There are 4 special controls in red, in the middle. 
 
@@ -66,26 +66,32 @@ Column 18 is the Instrument selector! It doesn't lerp, but you do have to copy i
 
 Instrument 0 is the null instrument. Not very useful!
 
-1 is the drumsampler. Sequence letters select which file to play. The files are in the 'data' directory. There are 10, so put 0-9 in the sequencer part of the rows. I need more than 10: someday. The filenames are hardcoded, which sucks but I'll get to it. 
+Instruments 1, 2 and 3 are sampler drumsets a, b, and c. 
 
-2 is a sine oscillator with an ADSR envelope and a volume control (col 27). ADSRs are set by first 4 controls. Sequencer Orcas control the pitch. The sine instrument is TUNED (see below). The sine inst wants "note off" commands; put '.''s in the seq. If you don't, it just plays forever.
+There is a data directory. In it, there are many files, some beginning with the letter 'a', then an Orca numberletter, then a '_'. Instrument 1 loads the 'a' samples, and the second letter of the filename determines what letter you put in the sequencer to play that sound. Drumset 'a' is a standard drum kit. Instrument 'b' is conga and timbale samples, and 'c' is tabla samples. The loading is automatic; change the files and you'll hear different sounds the next time you start Lezzerhess. They don't have to be drum sounds, you know. 
+
+Notice that the controls for the sampler drums default to 'xxxxxxx5'. The 'x''s mean that that control isn't used. The rightmost control is the volume-- drums are loud! 5 is turning it way down. 
+
+Instrument 4 is the "synth drum"; it doesn't work. 
+
+5 is a sine oscillator with an ADSR envelope and a volume control (col 27). ADSRs are set by first 4 controls. Sequencer Orcas control the pitch. The sine instrument is TUNED (see below). The sine inst wants "note off" commands; put '.''s in the seq. If you don't, it just plays forever.
 
 Wow, I just realized that you might not know what an "ADSR envelope" is. Or what an "oscillator" being a "sine" would signify. This *is* esoteric. https://cmtext.com/synthesis/chapter4_waveforms.php
 
-3 is a square osc; same ADSR. Col 24 (control 5) is the duty cycle, col 25 is a high-pass filter z-axis setting. Also TUNED. Also wants noteoffs.
+6 is a square osc; same ADSR. Col 24 (control 5) is the duty cycle, col 25 is a high-pass filter z-axis setting. Also TUNED. Also wants noteoffs.
 
 Note that the sine doesn't have a filter; filters don't affect sine waves-- no harmonics!
 
-4 is sawtooth: no duty cycle, otherwise same.
+7 is sawtooth: no duty cycle, otherwise same.
 
-5 is noise. HPF freq is controlled in the seq, ADSR same. volume same. But I hear you saying: but what about low-pass? Shush. 
+8 is noise. HPF freq is controlled in the seq, ADSR same. volume same. But I hear you saying: but what about low-pass? Shush. 
 
-Instruments 6-e are more-or-less directly included Instrmnt's (that's the parent class name) from "The Synthesis ToolKit in C++ (STK)" by Perry R. Cook & Gary P. Scavone-- which is not the usual STK that millions of C++ folks use daily, so good luck Googling it. https://ccrma.stanford.edu/software/stk/index.html
+Instruments a-i are more-or-less directly included Instrmnt's (that's the parent class name) from "The Synthesis ToolKit in C++ (STK)" by Perry R. Cook & Gary P. Scavone-- which is not the usual STK that millions of C++ folks use daily, so good luck Googling it. https://ccrma.stanford.edu/software/stk/index.html
 
-Instruments 6-9 are the presets for the "BandedWG" Instrmnt. They're kinda quiet, so up the volume. 
+Instruments a-d are the presets for the "BandedWG" Instrmnt. They're kinda quiet, so up the volume. 
 Uniform Bar, Tuned Bar, Glass Harmonica, and Tibetan Bowl. Kinda drone-y, kinda chime-y. BandedWG.h specifies 5 control messages, and the leftmost controls give you access to those settings. 
 
-Instruments a-e are FM-synthesis Instrmnts: BeeThree, a Hammond Organ; FMVoices, which kinda can sometimes sound like a human;  Rhodey, a piano-ish thing that Herbie Hancock might like; TubeBell, which is chimey and kinda a standard FM synth voice; and Wurley, another Hancocky piano. 
+Instruments e-i are FM-synthesis Instrmnts: BeeThree, a Hammond Organ; FMVoices, which kinda can sometimes sound like a human;  Rhodey, a piano-ish thing that Herbie Hancock might like; TubeBell, which is chimey and kinda a standard FM synth voice; and Wurley, another Hancocky piano. 
 
 Instrument Z is also the default, so if you go past 'e', you always get a STK "Simple" Instrmnt, which has a sine generator connected to a noise generator and some reverb and feedback. It *seems* like it would be good for synthetic percussion, but I haven't been pleased by my results yet. 
 
@@ -168,14 +174,11 @@ Now form a band.
 
 To Do: 
 The LHS previewing is not yet implemented. 
-The sampler file set being hardcoded is crappy-- scan the directory!
 More filters
 Many more instruments 
 Instruments can give helpful text strings so I don't have to memorize everything; I need to update those. 
-There are LERP bugs
 The tuner's sequencing is off by one. 
 Controls that are not LERPing should be cheaper
 Sound synthesis should be on its own thread. STK streams might already be doing that.
-STK's sound-file format requirements demand circumvention. Load .wav files, damn you. 
 
 
