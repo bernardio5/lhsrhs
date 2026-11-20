@@ -59,6 +59,7 @@ public:
 
     int pace, editPace; // slowdown factor: 4 is default, 2 is double spd, 8 is half 
     int step, lastStep; 
+    int loopLen, editLoopLen; 
     int measureStart; // seqMet->tick when the current measure started. 
     double lastEvtT; 
 
