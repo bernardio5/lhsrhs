@@ -82,8 +82,8 @@ void seqEditor::init() {
         abort(1, false);
         return;
     }
-
-    char initSeq[] = "4 1 1 1 4 1 111 "; // initial seq content for row 0
+                    //0123456789abcdef 
+    char initSeq[] = "0   1   0101  1 "; // initial seq content for row 0
     for (int i=0; i<SEQ_ROW_CT; ++i) {       
         try {
             char inst = seqOrca::ItoC(i+1);
@@ -235,12 +235,12 @@ void seqEditor::keyPressed (int key) {
     default:
         if (((c>='0')&&(c<='9')) || 
             ((c>='a')&&(c<='z')) || 
-    		(c == ' ') || 
+            (c == ' ') || 
+            (c == ';') || 
             (c == '.')) {
             directEdit(caretY, caretX, c);
             if (caretX<SEQ_RT_START-1)  { ++caretX; } 
     	}
     }
 }
-
 
