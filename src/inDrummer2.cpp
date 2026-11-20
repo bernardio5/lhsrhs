@@ -1,118 +1,76 @@
-/***************************************************/
-/*! \class inDrummer2
-    \brief STK drum sample player class.
+#pragma once
 
-    This class implements a drum sampling
-    synthesizer using FileWvIn objects and one-pole
-    filters.  The drum rawwave files are sampled
-    at 22050 Hz, but will be appropriately
-    interpolated for other sample rates.  You can
-    specify the maximum polyphony (maximum number
-    of simultaneous voices) via a #define in the
-    Drummer.h.
+#include <curses.h>
+#include <cstring>
+#include <stdlib.h>
 
-    by Perry R. Cook and Gary P. Scavone, 1995--2023.
+#include "seqKeyable.h"
+#include "seqMet.h"
+#include "seqOrca.h"
+#include "seqInst.h"
+#include "seqTunerRow.h"
+
+class seqRow {
+/* for each row, each character has a different use
+  0-15:   editable sequencer string. Note len=SEQ_STEPS=16   +---+---+---+--- 
+  16: timer: if non-0, is the number of measures until this line's data is applied
+  17: lerp time: if non-0, the # meas in the lerps of mix, a,b,c
+  18: instrument selector-- sets and copies, doesn't lerp
+  19: pace: the number of metronome ticks per seq step for this row
+  20-27: instrument settings, which lerp. See seqInst for specifics 
+    usually, 20,21,22,23: ADSR, and 43: mix/vol
+
+  28: first col of uneditable RHS. Also, current instrument
+  29: pace
+  30-45: current sequencer string -- remaining values are not editable
+  46-54: current instrument settings
+
+Rows are connected to instruments.
+Rows generate one event per update/seq step. Want more? Got a lot of rows. 
 */
-/***************************************************/
 
-#include "inDrummer2.h"
-#include <cmath>
-#include <string>
-#include <iostream>
-#include <filesystem>
-namespace fs = std::filesystem;
+public:
+    seqRow() {}
+    void init(int rw, seqMet *m, seqTunerRow *t, inMixer *mx,
+      char whichInst, char *initSeq, int lv);
 
+    void edit(int col, char c); 
+    void update();
+    void draw(WINDOW *win, int row);
+    void getHelpString(char *buffer);
+    Instrmnt *getInstp() { return myInst.instP; } // oo hiding
 
-namespace stk {
+    int myRow;
+    seqMet *theMet;
+    seqInst myInst;
+    long myNote; // # returned by voicer::noteOn 
 
-				  
-char waveNames[DRUM_NUMWAVES][28] =
-  { 
-    "bassdrum.raw",
-    "snardrum.raw",
-    "tomlowdr.raw",
+    // if active, all edits are immediately copied from editSeq to playingSeq
+    // if not, edits are copied only when timer goes to 0.
+    int isLive;
 
-    "tommiddr.raw",
-    "tomhidrm.raw",
-    "hihatcym.raw",
-    
-    "ridecymb.raw",
-    "crashcym.raw", 
-    "cowbell1.raw", 
-    
-    "tambourn.raw", 
-    "conga-open-1.wav",
-    "cymbal-hihat-foot-1.wav"
-  };
+    // timer counts down till edits are applied
+    // lerpTime is time spent lerping edits for keyables. 
+    seqOrca timer; 
 
-inDrummer2 :: inDrummer2( void ) : Instrmnt()
-{
-  // This counts the number of sounding voices.
-  nSounding_ = 0;
-  soundOrder_ = std::vector<int> (DRUM_POLYPHONY, -1);
-  soundNumber_ = std::vector<int> (DRUM_POLYPHONY, -1);
-}
+    // the editSeq is for tweaking, playingSeq is what's playing
+    char lerpTime, editInst, editSeq[SEQ_STEPS], playingSeq[SEQ_STEPS]; 
+    char cutSeq[SEQ_STEPS];
 
-inDrummer2 :: ~inDrummer2( void )
-{
-}
+    int pace, editPace; // slowdown factor: 4 is default, 2 is double spd, 8 is half 
+    int step, lastStep; 
+    int loopLen, editLoopLen; 
+    int measureStart; // seqMet->tick when the current measure started. 
+    double lastEvtT; 
 
-void inDrummer2 :: noteOn( StkFloat instrument, StkFloat amplitude )
-{
+    // each row can have filters or other synth parameters. 
+    seqKeyable keys[SEQ_CTRL_CT]; 
+    char debugMsg[80];
 
+    void cut(int col, char *cutSeq, char *cutSettings);
+    void copy(int col, char *cutSeq, char *cutSettings);
+    void paste(int col, char *cutSeq, char *cutSettings);
+    void increment(int col);
+    void decrement(int col); 
 
-  int noteNumber = (int)(floor(instrument)) % DRUM_NUMWAVES;
-
-  // If we already have a wave of this note number loaded, just reset
-  // it.  Otherwise, look first for an unused wave or preempt the
-  // oldest if already at maximum polyphony.
-  int iWave;
-  for ( iWave=0; iWave<DRUM_POLYPHONY; iWave++ ) {
-    if ( soundNumber_[iWave] == noteNumber ) {
-      if ( waves_[iWave].isFinished() ) {
-        soundOrder_[iWave] = nSounding_;
-        nSounding_++;
-      }
-      waves_[iWave].reset();
-      filters_[iWave].setPole( 0.999 - (amplitude * 0.6) );
-      filters_[iWave].setGain( amplitude );
-      break;
-    }
-  }
-
-  if ( iWave == DRUM_POLYPHONY ) { // This note number is not currently loaded.
-    if ( nSounding_ < DRUM_POLYPHONY ) {
-      for ( iWave=0; iWave<DRUM_POLYPHONY; iWave++ )
-        if ( soundOrder_[iWave] < 0 ) break;
-      nSounding_ += 1;
-    }
-    else { // interrupt oldest voice
-      for ( iWave=0; iWave<DRUM_POLYPHONY; iWave++ )
-        if ( soundOrder_[iWave] == 0 ) break;
-      // Re-order the list.
-      for ( int j=0; j<DRUM_POLYPHONY; j++ ) {
-        if ( soundOrder_[j] > soundOrder_[iWave] )
-          soundOrder_[j] -= 1;
-      }
-    }
-    soundOrder_[iWave] = nSounding_ - 1;
-    soundNumber_[iWave] = noteNumber;
-
-    // Concatenate the STK rawwave path to the rawwave file
-    waves_[iWave].openFile( (Stk::rawwavePath() + waveNames[ noteNumber ]).c_str(), true );
-    if ( Stk::sampleRate() != 22050.0 )
-      waves_[iWave].setRate( 22050.0 / Stk::sampleRate() );
-    filters_[iWave].setPole( 0.999 - (amplitude * 0.6) );
-    filters_[iWave].setGain( amplitude );
-  }
-
-}
-
-void inDrummer2 :: noteOff( StkFloat amplitude )
-{
-  // Set all sounding wave filter gains low.
-  int i = 0;
-  while ( i < nSounding_ ) filters_[i++].setGain( amplitude * 0.01 );
-}
-
-} // stk namespace
+};
