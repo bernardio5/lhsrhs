@@ -4,6 +4,9 @@
 #include "inDrummer2.h"
 #include "inBandedWG2.h"
 #include "inWaves.h"
+#include "inSimple2.h"
+#include "inSynDrum.h"
+
 
 // direct children of instrument class
 #include "../include/BlowBotl.h"
@@ -11,7 +14,7 @@
 #include "../include/Flute.h"
 #include "../include/Plucked.h"
 #include "../include/Shakers.h"
-#include "../include/Simple.h"
+//#include "../include/Simple.h"
 #include "../include/Sitar.h"
 #include "../include/StifKarp.h"
 #include "../include/VoicForm.h"
@@ -48,7 +51,10 @@ void seqInst::editType(char type) {
 	StkFloat tonic = (StkFloat)theTuner->freq(0);
     inBandedWG2 *b;
 	switch (type) { 
-		case SEQ_IN_DRUM: 		newp = new inDrummer2(); break;
+		case SEQ_IN_DRUM: 		newp = new inDrummer2('a'); break;
+		case SEQ_IN_CONGA: 		newp = new inDrummer2('b'); break;
+		case SEQ_IN_TABLA: 		newp = new inDrummer2('c'); break;
+		case SEQ_IN_SYNDRUM: 	newp = new inSynDrum(); break;
 	    case SEQ_IN_SINE: 			 
 	    case SEQ_IN_SQUARE: 
 	    case SEQ_IN_SAW: 
@@ -71,7 +77,7 @@ void seqInst::editType(char type) {
 		case SEQ_IN_STIF:	 	newp = new StifKarp(); break;
 		case SEQ_IN_VOICE:	 	newp = new VoicForm(); break;
 		case SEQ_IN_WHISTLE:	newp = new Whistle(); break;
-*/		default: 				newp = new Simple(); break; 
+*/		default: 				newp = new inSimple2(); break; 
 	} 
 	if (newp!=0) { 		// mutex!
 		myType = type; 
@@ -85,25 +91,28 @@ void seqInst::editType(char type) {
 std::string seqInst::getDefaults() {
 	std::string res = "12iixxxi"; 
 	switch (myType) { 
+		case SEQ_IN_CONGA: 
+		case SEQ_IN_TABLA: 	
 		case SEQ_IN_DRUM: 		res = "xxxxxxx5"; break;  // 'x'=>unused dont care
+		case SEQ_IN_SYNDRUM: 	res = "24ii48f5"; break;  
 
 	    case SEQ_IN_SINE: 			 
 	    case SEQ_IN_SQUARE: 
 	    case SEQ_IN_SAW: 
-	    case SEQ_IN_NOISE: 		res = "22v2ixxh"; break;
+	    case SEQ_IN_NOISE: 		res = "22v2ixx7"; break;
 
 		case SEQ_IN_BAR: 			
 		case SEQ_IN_TUNEDBAR:		
 		case SEQ_IN_GLASSHARM:		
-		case SEQ_IN_BOWL:		res = "m00m00xw"; break; // all the same banded 
+		case SEQ_IN_BOWL:		res = "m00m00xg"; break; // all the same banded 
 
 		case SEQ_IN_B3:	 			
 		case SEQ_IN_RHODEY:	 		
 		case SEQ_IN_TUBEBELL:	 	
-		case SEQ_IN_WURLEY:	 	res = "zz2mgxxm"; 	break;
-		case SEQ_IN_FMVOICES:	res = "z0mggxxm"; 	break;
+		case SEQ_IN_WURLEY:	 	res = "zz2mgxxg"; 	break;
+		case SEQ_IN_FMVOICES:	res = "z0mggxxg"; 	break;
 
-		default:			 	res = "5555xxxm"; break; // simple
+		default:			 	res = "26rfmmxg"; break; // simple
 	}
 	return res; 
 }
@@ -111,7 +120,10 @@ std::string seqInst::getDefaults() {
 
 void seqInst::trigger(char evt, seqKeyable *ctrls) {
 	switch (myType) { 
+		case SEQ_IN_CONGA: 
+		case SEQ_IN_TABLA: 	
 		case SEQ_IN_DRUM: 		triggerAsSampDrum(evt, ctrls); break; 
+		case SEQ_IN_SYNDRUM: 	triggerAsSynDrum(evt, ctrls); break; 
 
 	    case SEQ_IN_SINE: 			 
 	    case SEQ_IN_SQUARE: 
@@ -137,7 +149,10 @@ void seqInst::trigger(char evt, seqKeyable *ctrls) {
 std::string seqInst::getInfo() {
 	std::string res = "unimplemented  "; 
 	switch (myType) { 					//"123456789012345"
-		case SEQ_IN_DRUM: 		res = "Drummer2       "; break;
+		case SEQ_IN_CONGA: 		res = "Conga   (b0-bi)"; break;
+		case SEQ_IN_TABLA: 		res = "Tabla   (c0-c7)"; break;
+		case SEQ_IN_DRUM: 		res = "Drum Kit(a0-an)"; break;
+		case SEQ_IN_SYNDRUM: 	res = "SynDrum        "; break;
 
 	    case SEQ_IN_SINE: 		res = "Simple/Sine    "; break; 		 
 	    case SEQ_IN_SQUARE: 	res = "Simple/Square  "; break; 	
@@ -189,22 +204,11 @@ void seqInst::triggerAsSampDrum(char evt, seqKeyable *ctrls) {
 
 
 void seqInst::triggerAsWaves(char evt, seqKeyable *ctrls) {
-	inWaves *p = (inWaves*)instP; 
-//	if (!ctrls[0].inert) { // ADSR A, seconds
-		p->controlChange(0, ctrls[0].val());
-//	}
-//	if (!ctrls[1].inert) { // ADSR D, seconds
-		instP->controlChange(1, ctrls[1].val());
-//	}
-//	if (!ctrls[2].inert) { // ADSR S, %
-		instP->controlChange(2, ctrls[2].val());
-//	}
-//	if (!ctrls[3].inert) { // ADSR R, seconds
-		instP->controlChange(3, ctrls[3].val());
-//	}
-//	if (!ctrls[4].inert) { // pole z-value
-		instP->controlChange(4, (ctrls[4].val()*0.9)+0.05);
-//	}
+	instP->controlChange(0, ctrls[0].val()); // ADSR
+	instP->controlChange(1, ctrls[1].val()); 
+	instP->controlChange(2, ctrls[2].val());
+	instP->controlChange(3, ctrls[3].val());
+	instP->controlChange(4, (ctrls[4].val()*0.9)+0.05); // z-pole
 	StkFloat amp = ctrls[7].val(); // volume
 	if (evt=='.') { 
 		instP->noteOff( amp );
@@ -218,24 +222,13 @@ void seqInst::triggerAsWaves(char evt, seqKeyable *ctrls) {
 
 // children of banded
 void seqInst::triggerAsBanded(char evt, seqKeyable *ctrls) {
-	if (!ctrls[0].inert) { // 0
-		instP->controlChange(2, 128.0 * ctrls[0].val()); // bow pressure
-	}
-	if (!ctrls[1].inert) { // 0
-		instP->controlChange(4, 128.0 * ctrls[1].val() ); // bow motion
-	}
-	if (!ctrls[2].inert) { // vibrato frequency (units?)
-		instP->controlChange(11, 128.0 * ctrls[2].val());
-	}
-	if (!ctrls[3].inert) { // gain
-		instP->controlChange(1, 128.0 * ctrls[3].val()); // base gain 
-	}
-	if (!ctrls[4].inert) { // bow velocity
-		instP->controlChange(128, 128.0 * ctrls[4].val());
-	}
-	if (!ctrls[5].inert) { // set striking
-		instP->controlChange(64, 128.0 * ctrls[5].val());
-	}
+	instP->controlChange(2, 128.0 * ctrls[0].val()); // bow pressure
+	instP->controlChange(4, 128.0 * ctrls[1].val() ); // bow motion
+	instP->controlChange(11, 128.0 * ctrls[2].val()); // vibrato frequency
+	instP->controlChange(1, 128.0 * ctrls[3].val()); // base gain 
+	instP->controlChange(128, 128.0 * ctrls[4].val()); // bow velocity
+	instP->controlChange(64, 128.0 * ctrls[5].val()); // set striking-- more or less than 0.5
+	// 16: instrument presets 0 1 2 3
 	StkFloat amp = ctrls[7].val(); // should be range [0,1]
 	if (evt=='.') { 
 		instP->noteOff( amp );
@@ -250,21 +243,12 @@ void seqInst::triggerAsBanded(char evt, seqKeyable *ctrls) {
 
 // children of FM 
 void seqInst::triggerAsFM(char evt, seqKeyable *ctrls) {
-	if (!ctrls[0].inert) { // 2 / op4 feedback gain / default 
-		instP->controlChange(2, 128.0 * ctrls[0].val()); 
-	}
-	if (!ctrls[1].inert) { // 4 / op 3 gain
-		instP->controlChange(4, 128.0 * ctrls[1].val() );
-	}
-	if (!ctrls[2].inert) { // 11 LFO speed  (expects [0,128], uses [0,1536])
-		instP->controlChange(11, 128.0 * ctrls[2].val());
-	}
-	if (!ctrls[3].inert) { // 1 LFO "depth"
-		instP->controlChange(1, 128.0 * ctrls[3].val()); // base gain 
-	}
-	if (!ctrls[4].inert) { // 128  ADSR 2&4 target  
-		instP->controlChange(128, 128.0 * ctrls[4].val());
-	}
+	instP->controlChange(2,   128.0 * ctrls[0].val()); // feedback gain
+	instP->controlChange(4,   128.0 * ctrls[1].val() ); // 'op3' gain
+	instP->controlChange(11,  128.0 * ctrls[2].val()); // LFO speed (maps to [0,1536])
+	instP->controlChange(1,   128.0 * ctrls[3].val()); // LFO "depth" (apmlitude?)
+	instP->controlChange(128, 128.0 * ctrls[4].val()); // "ADSR 2&4 target" -- ?
+
 	StkFloat amp = ctrls[7].val(); // should be range [0,1]
 	if (evt=='.') { 
 		instP->noteOff( amp );
@@ -276,22 +260,34 @@ void seqInst::triggerAsFM(char evt, seqKeyable *ctrls) {
 }
 
 
-
-
 // 
+void seqInst::triggerAsSynDrum(char evt, seqKeyable *ctrls) {
+	instP->controlChange(0, ctrls[0].val()); // noise ADSR A - secs
+	instP->controlChange(1, ctrls[1].val()); //            D - secs * 0.1
+	instP->controlChange(2, ctrls[2].val()); // noise max
+	instP->controlChange(3, ctrls[3].val()); // noise filter z-pole 
+	instP->controlChange(4, ctrls[4].val()); // ring ADSR  A - secs
+	instP->controlChange(5, ctrls[5].val()); //            D - secs * 0.1
+	instP->controlChange(6, ctrls[6].val()); // ring max
+	StkFloat amp = ctrls[7].val(); // should be range [0,1]
+	if (evt=='.') { 
+		instP->noteOff( amp );
+	} else {
+		int deg = seqOrca::CtoI(evt); // pitch control  
+		StkFloat pitch = (StkFloat)theTuner->freq(deg);
+        instP->noteOn( pitch, amp );
+	}
+}
+
+
 void seqInst::triggerAsSimple(char evt, seqKeyable *ctrls) {
-	if (!ctrls[0].inert) { // 2 / filter pole position
-		instP->controlChange(2, 128.0 * ctrls[0].val()); 
-	}
-	if (!ctrls[1].inert) { // 4 / crossfade
-		instP->controlChange(4, 128.0 * ctrls[1].val() );
-	}
-	if (!ctrls[2].inert) { // 11 / envelope rate
-		instP->controlChange(11, 128.0 * ctrls[2].val());
-	}
-	if (!ctrls[3].inert) { // 128 gain
-		instP->controlChange(1, 128.0 * ctrls[3].val()); // base gain 
-	}
+	instP->controlChange(0, ctrls[0].val()); // ADSR A - secs
+	instP->controlChange(1, ctrls[1].val()); // ADSR D - secs * 0.1
+	instP->controlChange(2, ctrls[2].val()); //      S - %
+	instP->controlChange(3, ctrls[3].val()); //      R - secs * 3.0
+	instP->controlChange(4, ctrls[4].val());  // filter z-pole 
+	instP->controlChange(5, ctrls[5].val() ); // crossfade noise vs sine
+	instP->controlChange(6, ctrls[6].val()); // base gain 
 	StkFloat amp = ctrls[7].val(); // should be range [0,1]
 	if (evt=='.') { 
 		instP->noteOff( amp );
